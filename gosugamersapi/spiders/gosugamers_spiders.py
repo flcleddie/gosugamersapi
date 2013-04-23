@@ -19,9 +19,19 @@ class GosuGamersSpider(CrawlSpider):
     
     def parse_item(self, response):
         hxs = HtmlXPathSelector(response)
-        
-        #links = hxs.select('//div[@id="box_latest_gosubets_upcoming_matches"]')
-        
-        #print links.select('.//a/@href')
+
+        item = GosugamersapiItem()
+                
         players = hxs.select('//div[@class="cont_middle"]//table//font//a/text()').extract()
-        print players[0] + " VS " + players[1]
+        item['playerOne'] = players[0]
+        item['playerTwo'] = players[1]
+        
+        countries = hxs.select('//div[@class="cont_middle"]//table//td[@class="cont_middle_alt"]//img/@title').extract()
+        item['playerOneCountry'] = countries[0]
+        item['playerTwoCountry'] = countries[1]
+        
+        item['tournament'] = hxs.select('//div[@class="cont_middle"]//table//b//a/text()').extract()
+
+        item['time'] = hxs.select('//div[@class="cont_middle"]//table//span/@title').extract()
+        
+        return item
