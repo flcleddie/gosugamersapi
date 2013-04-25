@@ -30,7 +30,6 @@ class GosuGamersSpider(CrawlSpider):
     
     def parse_item(self, response):
         hxs = HtmlXPathSelector(response)
-        
 
         item = GosugamersapiItem()
         urlPathSplit = urlparse(response.url).path[1:].split('/')
